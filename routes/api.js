@@ -7,17 +7,51 @@ const logger = require('../logger')
 
 // Body Validations
 
-router.post('/flare', function (req, res, next) {
-    const ret = Joi.validate(req.body, models.Flare.schema.create, {
-        allowUnknown: false,
-        abortEarly: false
+router.post('/signup', function (req, res) {
+    const email = req.body.email
+    const password = req.body.password
+    console.log(req.body)
+
+    const user = models.User.build({
+        email: email,
+        password: password
     })
 
-    if (ret.error) {
-        res.status(400).end(ret.error.toString())
-    } else {
-        next()
-    }
+    models.User.findOne({
+        where: {
+            email: {
+                [models.Sequelize.Op.eq]: email
+            }
+        }
+    }).catch(function (e) {
+        // TODO: check to see when this would hit
+    }).then(user => {
+        if (user) {
+
+        } else {
+
+        }
+    })
+})
+
+router.post('/login', function (req, res) {
+    const email = req.body.email
+    const password = req.body.passport
+    models.User.findOne({
+        where: {
+            email: {
+                [models.Sequelize.Op.eq]: email
+            }
+        }
+    }).catch(function (e) {
+        // TODO: check to see when this would hit
+    }).then(user => {
+        if (user) {
+
+        } else {
+
+        }
+    })
 })
 
 // Create flare
@@ -38,6 +72,7 @@ router.post('/flare', function (req, res) {
         }))
     })
 })
+
 
 // Get flare
 router.get('/flare/:id', function (req, res) {

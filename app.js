@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const io = require('socket.io')
 const dotenv = require('dotenv')
+const passport = require('passport')
+
 
 
 const app = express()
@@ -13,7 +15,6 @@ const router = express.Router()
 const logger = require('./logger')
 io.listen(server)
 dotenv.config()
-
 
 // TODO: Create a middle ware file
 // adds io to request for routes to use
