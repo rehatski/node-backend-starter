@@ -14,16 +14,38 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     User.beforeCreate((user, options) => { //maybe change to beforeSave
-        console.log("wee")
-        return new Promise((resolve, reject) => {
-            bcrypt.hash(user.password, saltRounds, function(err, hash) {
-                console.log(hash)
-                user.password = hash
-                return resolve(user, options)
-            })
+        //return new Promise((resolve, reject) => {
+        //bcrypt.hash(user.password, saltRounds, function(err, hash) {
+        //console.log(hash)
+        //user.password = hash
+        //return resolve(user, options)
+        //})
+        //})
+        return User.hashPassword(user.password)
+            .then(hashedPassword => {
+                console.log(hashedPassword)
+                user.password = hashedPassword
 
-        })
+            })
     })
+
+    User.hashPassword = (password) => {
+        return new Promise((resolve, reject) => {
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+                return resolve(hash)
+            })
+        })
+    }
+
+    User.prototype.verifyPassword = function(enteredPassword) {
+        return new Promise((resolve, reject) => {
+            console.log(`verifyPassword input password: ${enteredPassword} hash: ${this.email}`)
+            bcrypt.compare(enteredPassword, this.password, function(err, res) {
+                console.log(`verifyPassword result: ${res} error: ${err}`)
+                return resolve(res)
+            })
+        })
+    }
 
     return User;
 };

@@ -41,7 +41,8 @@ router.post('/signup', function (req, res) {
 
 router.post('/login', function (req, res) {
     const email = req.body.email
-    const password = req.body.passport
+    const password = req.body.password
+    console.log(`got this email: ${email} password: ${password}`)
     models.User.findOne({
         where: {
             email: {
@@ -52,8 +53,22 @@ router.post('/login', function (req, res) {
         // TODO: check to see when this would hit
     }).then(user => {
         if (user) {
-
+            console.log(`user found email: ${user.email}`)
+            user.verifyPassword(password)
+                .then((verified) => {
+                    console.log(`password verified: ${verified}`)
+                    if ( verified ) {
+                        res.setHeader('Content-Type', 'application/json')
+                        res.status(200)
+                        res.send(JSON.stringify({
+                            token: jwt.sign({userId: user.id}, process.env.JWT_SECRET)
+                        }))
+                    }
+                })
         } else {
+            res.setHeader('Content-Type', 'application/json')
+            res.status(404)
+            res.send()
 
         }
     })
