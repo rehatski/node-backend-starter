@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken')
 const Joi = require('joi')
 const models = require('../models')
 const logger = require('../logger')
+const passport = require('passport')
 
 router.post('/signup', function (req, res) {
     const email = req.body.email
     const password = req.body.password
-    console.log(req.body)
 
     const userBuild = models.User.build({
         email: email,
@@ -42,7 +42,6 @@ router.post('/signup', function (req, res) {
 router.post('/login', function (req, res) {
     const email = req.body.email
     const password = req.body.password
-    console.log(`got this email: ${email} password: ${password}`)
     models.User.findOne({
         where: {
             email: {
@@ -53,10 +52,8 @@ router.post('/login', function (req, res) {
         // TODO: check to see when this would hit
     }).then(user => {
         if (user) {
-            console.log(`user found email: ${user.email}`)
             user.verifyPassword(password)
                 .then((verified) => {
-                    console.log(`password verified: ${verified}`)
                     if ( verified ) {
                         res.setHeader('Content-Type', 'application/json')
                         res.status(200)
@@ -72,6 +69,13 @@ router.post('/login', function (req, res) {
 
         }
     })
+})
+
+router.get('/user-stuff', passport.authenticate('jwt', {session:false}), function (req, res) {
+    res.setHeader('Content-Type', 'application/json')
+    res.status(200)
+    res.send(JSON.stringify({user: "neat"}))
+
 })
 
 

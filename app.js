@@ -8,13 +8,14 @@ const dotenv = require('dotenv')
 const passport = require('passport')
 
 
-
 const app = express()
 const server = http.createServer(app)
 const router = express.Router()
 const logger = require('./logger')
 io.listen(server)
 dotenv.config()
+
+app.use(passport.initialize())
 
 // TODO: Create a middle ware file
 // adds io to request for routes to use
@@ -34,6 +35,8 @@ app.set('view engine', 'html')
 app.set('views', __dirname + '/views')
 
 
+const middleware = require('./middleware/passport')
 app.use(require(__dirname + '/routes'))
+
 
 server.listen('4200')

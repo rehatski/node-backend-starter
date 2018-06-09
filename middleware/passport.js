@@ -8,12 +8,11 @@ const JwtStrategy = passportJWT.Strategy
 
 const jwtOptions = {
     secretOrKey: process.env.JWT_SECRET,
-    jwtFromRequest: ExtractJwt.fromAuthHeader()
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 }
 
 const jwtStrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-    console.log('payload received', jwt_payload)
-    const userId = jwt_payload.id
+    const userId = jwt_payload.userId
     models.User.findOne({
         where: {
             id: {
@@ -32,3 +31,6 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 })
 
 passport.use(jwtStrategy)
+
+module.exports = jwtStrategy
+
