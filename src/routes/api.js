@@ -3,7 +3,7 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const Joi = require('joi')
 const models = require('../models')
-const logger = require('../logger')
+const logger = require('../tools/logger')
 const passport = require('passport')
 
 router.post('/signup', function (req, res) {

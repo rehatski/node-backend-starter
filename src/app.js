@@ -11,7 +11,7 @@ const passport = require('passport')
 const app = express()
 const server = http.createServer(app)
 const router = express.Router()
-const logger = require('./logger')
+const logger = require('./tools/logger')
 io.listen(server)
 dotenv.config()
 

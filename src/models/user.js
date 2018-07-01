@@ -14,13 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     User.beforeCreate((user, options) => { //maybe change to beforeSave
-        //return new Promise((resolve, reject) => {
-        //bcrypt.hash(user.password, saltRounds, function(err, hash) {
-        //console.log(hash)
-        //user.password = hash
-        //return resolve(user, options)
-        //})
-        //})
         return User.hashPassword(user.password)
             .then(hashedPassword => {
                 console.log(hashedPassword)

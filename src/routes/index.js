@@ -4,7 +4,6 @@ const express = require('express'),
 router.use('/api', require('./api.js'))
 
 router.get('/', function (req, res) {
-    console.log("shit")
   res.render('index.ejs')
 })
 
