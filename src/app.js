@@ -7,7 +7,6 @@ const io = require('socket.io')
 const dotenv = require('dotenv')
 const passport = require('passport')
 
-
 const app = express()
 const server = http.createServer(app)
 const router = express.Router()
@@ -40,3 +39,9 @@ app.use(require(__dirname + '/routes'))
 
 
 server.listen('4200')
+
+
+//DOCKER
+//docker build -t NAME .
+//docker run -p 49160:4200 -d NAME
+// (match port to server listen)
